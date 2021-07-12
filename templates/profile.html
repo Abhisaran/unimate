@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+    <script type="text/javascript">
+        function loading() {
+            $("#loading").show();
+            $("#content").hide();
+        }
+    </script>
+</head>
+<body>
+<div id="loading" style="display: none; position: fixed; height: 100vh; width: 100vw;">
+    <div style="display: flex; justify-content: space-around; align-items: center; height: 100vh; width: 100vw;">
+        <img src="{{url_for('static',filename='/res/loading.gif')}}" alt="">
+    </div>
+</div>
+<div id="content">
+    Welcome to your Profile
+    <a href="/logout">Logout</a>
+
+    {% if context.error%}
+    <p>{{context.error}}</p>
+    {% endif%}
+    <div id="profile-div">
+        <div id="password-form">
+            <form action="" method="post">
+                <input type="text" hidden name="form_type" value="new_password">
+                <p>Change your password:</p>
+                <label>Old password:
+                    <input type="password" name="old_password" placeholder="old password">
+                </label>
+                <label>New password:
+                    <input type="password" name="new_password" placeholder="new password">
+                </label>
+                <input type="submit">
+            </form>
+            {% if context.new_password_error%}
+            <p>{{context.new_password_error}}</p>
+            {% endif%}
+        </div>
+        <hr>
+        <div id="college-form">
+            <form action="" method="post">
+                <input type="text" hidden name="form_type" value="college_preference">
+                <label>Choose your college
+                    <select name="college_name" required>
+                        <option value="" disabled>--Please choose an option--</option>
+                        {% for i in context.uni_list%}
+                        <option value="{{i}}">{{i}}</option>
+                        {%endfor%}
+                    </select>
+                </label>
+                <p>If you don't find your college on the list, please visit us again later, we are still under
+                    development</p>
+                <label>Choose your starting year:
+                    <input type="number" min="1990" max="2021" step="1" name="college_year" required>
+                </label>
+                <label>Choose your semester:
+                    <select name="college_semester" required>
+                        <option value="" disabled>--Please choose an option--</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </label>
+                <p>If your college is trimester based, please visit us again later, we are still under
+                    development</p>
+                <label>Choose your subjects:(You can choose more than one using shift or ctrl)
+                    <select id="subjects" name="college_subjects" multiple required>
+                        <option value="" disabled>--Please choose an option--</option>
+                        {% for a in context.subject_list%}
+                        <option value="{{a}}">{{a}}</option>
+                        {%endfor%}
+                    </select>
+                </label>
+                <p>If you dont find your subject, please visit us again later, we are still under
+                    development</p>
+                <input type="submit">
+            </form>
+            {% if context.college_preference_error%}
+            <p>{{context.college_preference_error}}</p>
+            {% endif%}
+        </div>
+        <hr>
+        <div id="personal-form">
+            <form action="" method="post" enctype="multipart/form-data">
+                <input type="text" hidden name="form_type" value="personal_details">
+                <label>Name:
+                    <input type="text" name="name">
+                </label>
+                <label>Student ID:
+                    <input type="text" name="student_id">
+                </label>
+                <input type="file" placeholder="Image" name="img" accept="image/jpeg">
+                <input type="submit">
+            </form>
+            {% if context.user_details_error%}
+            <p>{{context.user_details_error}}</p>
+            {% endif%}
+        </div>
+    </div>
+    <a href="/main/{{context.auth_id}}">proceed to Home page</a>
+</div>
+</body>
+</html>

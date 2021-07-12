@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <script type="text/javascript" src="{{url_for('static', filename='js/login.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/login.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first">
+            <h2>Welcome</h2>
+        </div>
+        <form action="" method="post">
+            <input type="text" id="login" class="fadeIn second" name="email" placeholder="email"
+                   value="{{context.email}}">
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+            <input type="submit" class="fadeIn fourth" value="Sign Up">
+        </form>
+        <div id="formFooter">
+            <a class="underlineHover" href="/login">Login</a>
+        </div>
+        <div id="to_be_centered">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <div class="fb-login-button" data-width="40px" data-size="large" data-button-type="continue_with"
+                 data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
+        </div>
+        {% if context.error%}
+        <p>{{context.error}}</p>
+        {% endif%}
+    </div>
+</div>
+
+<!--<div id="register-div">-->
+<!--    <form action="" method="post">-->
+<!--        <input type="email" name="email" placeholder="email">-->
+<!--        <input type="password" name="password" placeholder="password">-->
+<!--        <input type="submit">-->
+<!--    </form>-->
+<!--    {% if context.error%}-->
+<!--    <p>{{context.error}}</p>-->
+<!--    {% endif%}-->
+<!--</div>-->
+<!--<a href="/login">proceed to login</a>-->
+</body>
+</html>

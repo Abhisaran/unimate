@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/main.css') }}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.js"></script>
+    <script type="text/javascript">
+        function loading() {
+            $("#loading").show();
+            $("#content").hide();
+        }
+    </script>
+</head>
+<body>
+<div id="loading" style="display: none; position: fixed; height: 100vh; width: 100vw;">
+    <div style="display: flex; justify-content: space-around; align-items: center; height: 100vh; width: 100vw;">
+        <img src="{{url_for('static',filename='/res/loading.gif')}}" alt="">
+    </div>
+</div>
+
+<div id="content">
+    <div id="left-container">
+        <div id="main-profile">
+            {% if not context.user_details.user_image %}
+            <img class="square"
+                 src="https://unimate-user-s3.s3.ap-southeast-2.amazonaws.com/user-images/default.jpg" alt="">
+            {% else%}
+            <img class="square" src="{{context.user_details.user_image}}" alt="">
+            {% endif%}
+            <h2>Welcome {{context.user_details.name}}!</h2>
+            <a href="/profile/{{context.auth_id}}">Profile</a>
+            <a href="/chatbot/{{context.auth_id}}">Chatbot</a>
+            <a href="/logout">Logout</a>
+            <p id="main_auth_id" hidden>{{context.auth_id}}</p>
+            {% if context.error%}
+            <script>alert("{{context.error}}")</script>
+            {%endif%}
+            {% if not context.user_details.details_updated%}
+            <script>alert("Please proceed to view your profile and update your details")</script>
+            <script>window.location = "/profile/{{context.auth_id}}" </script>
+            {% endif%}
+        </div>
+        <div id="cohorts">
+            <div class="tab">
+                {% for cohort_item in context.user_details.cohort_list %}
+                <button class="tablinks" onclick="openTab(event, '{{cohort_item}}')">{{cohort_item}}</button>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div id="right-container">
+<!--        <p>{{context.user_details.cohort_list}}</p>-->
+        <div id="cohort-message-div">
+            {% for cohort_item in context.user_details.cohort_list %}
+            <div id="{{cohort_item}}" class="tabcontent">
+            </div>
+            {% endfor %}
+        </div>
+        <div id="right-container-form">
+            <input id="right-container-form-subject" type="text" name="subject" placeholder="Subject" required>
+            <div>
+                <input id="right-container-form-desc" type="text" name="description" placeholder="Description" required>
+                <button id="right-container-form-button" type="submit" onclick="put_cohort_data()">Post</button>
+            </div>
+        </div>
+    </div>
+    <div id="floating-box">
+        <div id="weather_box">
+            <div id="weather_box_head">
+                <h1 style="color:black">⛅ {{context.weather.temp}}° C</h1>
+            </div>
+            <div>
+                <p>Melbourne</p>
+                <p id="time">
+                </p>
+                <script>
+                    function clock() {
+                        var today = new Date();
+                        document.getElementById("time").innerText = (('00' + today.getHours().toString()).slice(-2)) + ":" + (('00' + today.getMinutes().toString()).slice(-2))
+                        setTimeout(clock, 1000)
+                    }
+                    clock()
+                </script>
+            </div>
+            <div>
+                <p>Min: {{context.weather.temp_min}}</p>
+                <p>Max: {{context.weather.temp_max}}</p>
+            </div>
+            <div>
+                <p><img src="https://i.imgur.com/B9kqOzp.png" height="17px">
+                    <span> 40 km/h </span></p>
+                <p>Humidity: {{context.weather.humidity}}%</p>
+            </div>
+            <!--        <p>{{context.weather}}</p>-->
+        </div>
+        <div id="currency_exchange_box_div">
+            <form action="" method="post" id="currency_exchange_box">
+                <div class="currency_exchange_box_head"><h1 style="color: black">Currency Exchange</h1>
+                </div>
+                <div>
+                    <input type="text" name="form_type" hidden value="currency_exchange_box">
+                    <label for="currency_exchange_box_amount">Amount:</label>
+                    <input id="currency_exchange_box_amount" type="number" name="amount" placeholder="Amount"
+                           step="0.01" min="0.01" max="10000" required>
+                </div>
+                <div>
+                    <label for="currency_exchange_box_curr1">From:</label>
+                    <select id="currency_exchange_box_curr1" name="curr1">
+                        <option value="" disabled>--Please choose an option--</option>
+                        {% for a in context.currency_exchange_list%}
+                        <option value="{{context.currency_exchange_list[a].id}}">
+                            {{context.currency_exchange_list[a].currencyName}}
+                            {{context.currency_exchange_list[a].currencySymbol}}
+                        </option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div>
+                    <label for="currency_exchange_box_curr2">To:</label>
+                    <select id="currency_exchange_box_curr2" name="curr2">
+                        <option value="" disabled>--Please choose an option--</option>
+                        {% for a in context.currency_exchange_list%}
+                        <option value="{{context.currency_exchange_list[a].id}}">
+                            {{context.currency_exchange_list[a].currencyName}}
+                            {{context.currency_exchange_list[a].currencySymbol}}
+                        </option>
+                        {%endfor%}
+                    </select>
+                </div>
+                <div class="currency_exchange_box_head">
+                    <input type="submit" onclick="loading();">
+                </div>
+                {% if context.currency_exchange%}
+                <p style="margin-left: 30px; font-family: monospace">{{context.currency_exchange}}</p>
+                {% endif%}
+            </form>
+        </div>
+        <div id="urban_dictionary_box">
+            <div><h1>Urban Dictionary</h1>
+            </div>
+            <form action="" method="post">
+                <input type="password" hidden name="form_type" value="urban_dictionary">
+                <input type="text" name="word" placeholder="Enter a word" required
+                       value="{{context.urban_dictionary_word}}">
+                <input style="height: 31px" type="submit" value="➜" onclick="loading();">
+            </form>
+            <div id="urban_dictionary_box_text_area">
+                {% if context.urban_dictionary_list%}
+                <ul style="margin: 0">
+                    <h3 style="margin-top: 5px; margin-bottom: 5px">Definitions:</h3>
+                    {% for i in context.urban_dictionary_list%}
+                    <li>{{i}}</li>
+                    {%endfor%}
+                </ul>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{{url_for('static', filename='js/main.js')}}"></script>
+</body>
+</html>

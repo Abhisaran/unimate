@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Bot</title>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/bot.css') }}">
+</head>
+<body>
+<script>var userImageUrl = "{{context.user_details.user_image}}"</script>
+<!--<p id="user_image_url" hidden>{{context.user_details.user_image}}</p>-->
+<div style="position: fixed; margin-left: 30px; margin-top: 30px">
+    <h1 class="neon-glow">Welcome {{context.user_details.name}}!</h1>
+    <a href="/main/{{context.auth_id}}">Main Page</a>
+    <a href="/logout">Proceed to Logout</a>
+</div>
+<div id="container" class="container">
+    <div id="chat" class="chat">
+        <div id="messages" class="messages"></div>
+        <input id="input" type="text" placeholder="Type here..." autocomplete="off" autofocus="true"/>
+    </div>
+    <img src="../static/res/robo_bg.png">
+</div>
+<!--//https://github.com/sylviapap/chatbot-->
+<!--https://static.wikia.nocookie.net/ppc/images/f/f8/Baymax.png/revision/latest?cb=20150917182313-->
+</body>
+<script type="text/javascript" src="{{url_for('static', filename='js/bot.js')}}"></script>
+</html>
+
+

@@ -1,0 +1,5 @@
+rds_database_username = 'admin'
+rds_database_name = 'database-1'
+rds_database_password = 'unimatedb'
+google_client_id = '897045993263-vt9fn5mppf27h1sccb8a6c7s1p13sheg.apps.googleusercontent.com'
+google_client_secret = '8sJM-HBhlCPnq6yMxYTCbulh'

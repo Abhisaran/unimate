@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id"
+          content="897045993263-vt9fn5mppf27h1sccb8a6c7s1p13sheg.apps.googleusercontent.com">
+    <script type="text/javascript" src="{{url_for('static', filename='js/login.js')}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='css/login.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet"
+          id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="fb-root"></div>
+<script async defer crossorigin="anonymous"
+        src="https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v11.0&appId=1100299260462656&autoLogAppEvents=1"
+        nonce="TZeKVUQr"></script>
+<!--<fb:login-button-->
+<!--        scope="public_profile,email"-->
+<!--        onlogin="checkLoginState();">-->
+<!--</fb:login-button>-->
+<script>
+    function onSignIn(googleUser) {
+        var profile = googleUser.getBasicProfile();
+        // console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+        alert('Name: ' + profile.getName());
+        // console.log('Image URL: ' + profile.getImageUrl());
+        alert('Email: ' + profile.getEmail()); // This is null if the 'email' scope is not present.
+    }
+</script>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div class="fadeIn first">
+            <h2>Welcome</h2>
+        </div>
+        <form action="" method="post">
+            <input type="text" id="login" class="fadeIn second" name="email" placeholder="email"
+                   value="{{context.email}}">
+            <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+            <input type="submit" class="fadeIn fourth" value="Log In">
+        </form>
+        <div id="formFooter">
+            <a class="underlineHover" href="/register">Sign Up</a>
+        </div>
+        <div id="to_be_centered">
+            <div class="g-signin2" data-onsuccess="onSignIn"></div>
+            <div class="fb-login-button" data-width="40px" data-size="large" data-button-type="continue_with"
+                 data-layout="default" data-auto-logout-link="false" data-use-continue-as="false"></div>
+        </div>
+        {% if context.error%}
+        <p>{{context.error}}</p>
+        {% endif%}
+    </div>
+</div>
+
+</body>
+</html>
